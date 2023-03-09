@@ -1,0 +1,34 @@
+package com.onix.hcmustour.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity(name = "Category")
+@Table(name = "category")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Category {
+    @Id
+    @SequenceGenerator(name = "category_sequence", sequenceName = "category_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_sequence")
+    @Column(name = "id", updatable = false)
+    private String id;
+
+    @Column(name = "name", nullable = false, columnDefinition = "TEXT")
+    private String name;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
+    @Column(name = "level", nullable = false)
+    private Integer level;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Scope> scopes = new ArrayList<>();
+}
