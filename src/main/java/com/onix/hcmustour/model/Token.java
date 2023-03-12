@@ -18,7 +18,7 @@ public class Token {
     @SequenceGenerator(name = "token_sequence", sequenceName = "token_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "token_sequence")
     @Column(name = "id", updatable = false)
-    private String id;
+    private Integer id;
 
     @Column(name = "token", nullable = false, unique = true, columnDefinition = "TEXT")
     private String token;

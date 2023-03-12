@@ -1,4 +1,4 @@
-package com.onix.hcmustour.config;
+package com.onix.hcmustour.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

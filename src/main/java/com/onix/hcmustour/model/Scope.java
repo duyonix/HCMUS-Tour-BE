@@ -20,7 +20,7 @@ public class Scope {
     @SequenceGenerator(name = "scope_sequence", sequenceName = "scope_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "scope_sequence")
     @Column(name = "id", updatable = false)
-    private String id;
+    private Integer id;
 
     @Column(name = "name", nullable = false, columnDefinition = "TEXT")
     private String name;

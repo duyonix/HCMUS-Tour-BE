@@ -17,7 +17,7 @@ public class Costume {
     @SequenceGenerator(name = "costume_sequence", sequenceName = "costume_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "costume_sequence")
     @Column(name = "id", updatable = false)
-    private String id;
+    private Integer id;
 
     @Column(name = "name", nullable = false, columnDefinition = "TEXT")
     private String name;

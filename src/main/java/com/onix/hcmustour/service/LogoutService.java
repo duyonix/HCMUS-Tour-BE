@@ -1,4 +1,4 @@
-package com.onix.hcmustour.config;
+package com.onix.hcmustour.service;
 
 import com.onix.hcmustour.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
