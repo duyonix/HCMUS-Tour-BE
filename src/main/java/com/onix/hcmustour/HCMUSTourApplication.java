@@ -1,9 +1,9 @@
 package com.onix.hcmustour;
 
+import com.onix.hcmustour.dto.response.Response;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +19,7 @@ public class HCMUSTourApplication {
 	}
 
 	@GetMapping
-	public ResponseEntity<String> greeting() {
-		return ResponseEntity.ok("Welcome to HCMUS Tour");
+	public Response<Object> greeting() {
+		return Response.ok().setPayload("Welcome to HCMUS Tour!");
 	}
 }

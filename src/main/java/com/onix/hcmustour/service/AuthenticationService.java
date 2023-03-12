@@ -7,7 +7,6 @@ import com.onix.hcmustour.dto.model.UserDto;
 import com.onix.hcmustour.exception.ApplicationException;
 import com.onix.hcmustour.exception.EntityType;
 import com.onix.hcmustour.exception.ExceptionType;
-import com.onix.hcmustour.model.Role;
 import com.onix.hcmustour.model.Token;
 import com.onix.hcmustour.model.TokenType;
 import com.onix.hcmustour.model.User;

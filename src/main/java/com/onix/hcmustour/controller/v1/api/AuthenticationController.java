@@ -2,7 +2,6 @@ package com.onix.hcmustour.controller.v1.api;
 
 import com.onix.hcmustour.controller.v1.request.AuthenticationRequest;
 import com.onix.hcmustour.controller.v1.request.RegisterRequest;
-import com.onix.hcmustour.dto.model.AuthenticationDto;
 import com.onix.hcmustour.dto.model.UserDto;
 import com.onix.hcmustour.dto.response.Response;
 import com.onix.hcmustour.model.Role;

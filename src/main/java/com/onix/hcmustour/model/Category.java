@@ -28,8 +28,8 @@ public class Category {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "level", nullable = false)
-    private Integer level;
+    @Column(name = "background", columnDefinition = "TEXT")
+    private String background;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scope> scopes = new ArrayList<>();

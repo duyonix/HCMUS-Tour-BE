@@ -12,10 +12,12 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AuthenticationRequest {
-    @NotBlank(message = "Email is required")
-    private String email;
+public class CategoryRequest {
+    @NotBlank(message = "Name is required")
+    private String name;
 
-    @NotBlank(message = "Password is required")
-    private String password;
+    @NotBlank(message = "Background is required")
+    private String background;
+
+    private String description;
 }

@@ -1,7 +1,7 @@
-package com.onix.hcmustour.controller.v1.request;
+package com.onix.hcmustour.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,11 +11,14 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AuthenticationRequest {
-    @NotBlank(message = "Email is required")
-    private String email;
+public class CategoryDto {
+    private Integer id;
 
-    @NotBlank(message = "Password is required")
-    private String password;
+    private String name;
+
+    private String description;
+
+    private String background;
 }
