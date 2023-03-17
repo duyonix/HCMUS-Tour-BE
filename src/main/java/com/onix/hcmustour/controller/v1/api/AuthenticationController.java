@@ -26,31 +26,19 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<Response> register(@RequestBody @Valid RegisterRequest request) {
-        try  {
-            log.info("AuthenticationController::register request body {}", ValueMapper.jsonAsString(request));
-            Response<Object> response = Response.ok().setPayload(registerUser(request));
-            log.info("AuthenticationController::register response {}", ValueMapper.jsonAsString(response));
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (Exception e) {
-            Response<Object> errorResponse = Response.badRequest().setErrors(e.getMessage());
-            log.error("AuthenticationController::register error response {}", ValueMapper.jsonAsString(errorResponse));
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-        }
+        log.info("AuthenticationController::register request body {}", ValueMapper.jsonAsString(request));
+        Response<Object> response = Response.ok().setPayload(registerUser(request));
+        log.info("AuthenticationController::register response {}", ValueMapper.jsonAsString(response));
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<Response> authenticate(@RequestBody @Valid AuthenticationRequest request) {
 //        return Response.ok().setPayload(authenticationService.authenticate(request));
-        try {
-            log.info("AuthenticationController::authenticate request body {}", ValueMapper.jsonAsString(request));
-            Response<Object> response = Response.ok().setPayload(authenticationService.authenticate(request));
-            log.info("AuthenticationController::authenticate response {}", ValueMapper.jsonAsString(response));
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            Response<Object> errorResponse = Response.badRequest().setErrors(e.getMessage());
-            log.error("AuthenticationController::authenticate error response {}", ValueMapper.jsonAsString(errorResponse));
-            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-        }
+        log.info("AuthenticationController::authenticate request body {}", ValueMapper.jsonAsString(request));
+        Response<Object> response = Response.ok().setPayload(authenticationService.authenticate(request));
+        log.info("AuthenticationController::authenticate response {}", ValueMapper.jsonAsString(response));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     private UserDto registerUser(RegisterRequest request) {

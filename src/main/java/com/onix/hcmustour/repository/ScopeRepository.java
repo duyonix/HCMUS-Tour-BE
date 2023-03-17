@@ -1,7 +1,10 @@
 package com.onix.hcmustour.repository;
 
 import com.onix.hcmustour.model.Scope;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ScopeRepository extends CrudRepository<Scope, Long> {
+import java.util.Optional;
+
+public interface ScopeRepository extends JpaRepository<Scope, Long> {
+    Optional<Scope> findByName(String name);
 }

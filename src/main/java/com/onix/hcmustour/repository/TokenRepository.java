@@ -1,13 +1,13 @@
 package com.onix.hcmustour.repository;
 
 import com.onix.hcmustour.model.Token;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface TokenRepository extends CrudRepository<Token, Long> {
+public interface TokenRepository extends JpaRepository<Token, Long> {
     @Query(value = """
       select t from Token t inner join User u\s
       on t.user.id = u.id\s
