@@ -136,8 +136,8 @@ public class CategoryService {
         }
 
         try {
-            categoryRepository.delete(category.get());
             categoryDto = CategoryMapper.toCategoryDto(category.get());
+            categoryRepository.delete(category.get());
             log.debug("CategoryService::deleteCategory received response from database {}", ValueMapper.jsonAsString(categoryDto));
         } catch (Exception e) {
             log.error("CategoryService::deleteCategory execution failed with error {}", e.getMessage());
