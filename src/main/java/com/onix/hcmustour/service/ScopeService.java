@@ -11,6 +11,7 @@ import com.onix.hcmustour.model.Scope;
 import com.onix.hcmustour.repository.CategoryRepository;
 import com.onix.hcmustour.repository.ScopeRepository;
 import com.onix.hcmustour.util.ValueMapper;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,11 +48,7 @@ public class ScopeService {
                 });
 
         try {
-            Scope newScope = new Scope()
-                    .setName(scopeRequest.getName())
-                    .setDescription(scopeRequest.getDescription())
-                    .setBackgrounds(scopeRequest.getBackgrounds())
-                    .setCategory(category);
+            Scope newScope = ScopeMapper.toScope(scopeRequest, category);
             log.debug("ScopeService::addScope request parameters {}", ValueMapper.jsonAsString(newScope));
 
             Scope savedScope = scopeRepository.save(newScope);
@@ -95,7 +92,6 @@ public class ScopeService {
                     log.error("ScopeService::getScope execution failed with invalid scope id {}", id);
                     throw exception(EntityType.SCOPE, ExceptionType.ENTITY_NOT_FOUND, id.toString());
                 });
-
         scopeDto = ScopeMapper.toScopeDto(scope);
         log.debug("ScopeService::getScope received response from database {}", ValueMapper.jsonAsString(scopeDto));
 
@@ -113,6 +109,7 @@ public class ScopeService {
                     log.error("ScopeService::updateScope execution failed with invalid scope id {}", id);
                     throw exception(EntityType.SCOPE, ExceptionType.ENTITY_NOT_FOUND, id.toString());
                 });
+        log.info("ScopeService::updateScope scope found {}", ValueMapper.jsonAsString(scope));
 
         Optional<Scope> duplicateScope = scopeRepository.findByName(scopeRequest.getName());
         if (duplicateScope.isPresent() && !duplicateScope.get().getId().equals(scope.getId())) {
@@ -125,14 +122,12 @@ public class ScopeService {
                     log.error("ScopeService::updateScope execution failed with invalid category id {}", scopeRequest.getCategoryId());
                     throw exception(EntityType.CATEGORY, ExceptionType.ENTITY_NOT_FOUND, scopeRequest.getCategoryId().toString());
                 });
+        log.info("ScopeService::updateScope category found {}", ValueMapper.jsonAsString(category));
 
         try {
-            Scope updatedScope = scope
-                    .setId(scope.getId())
-                    .setName(scopeRequest.getName())
-                    .setDescription(scopeRequest.getDescription())
-                    .setBackgrounds(scopeRequest.getBackgrounds())
-                    .setCategory(category);
+            Scope updatedScope = ScopeMapper.toScope(scopeRequest, category);
+            updatedScope.setId(scope.getId());
+            updatedScope.setCostumes(scope.getCostumes());
             log.debug("ScopeService::updateScope request parameters {}", ValueMapper.jsonAsString(updatedScope));
 
             Scope savedScope = scopeRepository.save(updatedScope);
@@ -147,6 +142,7 @@ public class ScopeService {
         return scopeDto;
     }
 
+    @Transactional
     public ScopeDto deleteScope(Integer id) {
         log.info("ScopeService::deleteScope execution started");
         ScopeDto scopeDto;

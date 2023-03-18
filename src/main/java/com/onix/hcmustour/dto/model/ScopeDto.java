@@ -2,6 +2,10 @@ package com.onix.hcmustour.dto.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.onix.hcmustour.model.Category;
+import com.onix.hcmustour.model.Coordinate2D;
+import com.onix.hcmustour.model.Coordinate3D;
+import com.onix.hcmustour.model.Costume;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +26,17 @@ public class ScopeDto {
 
     private String description;
 
+    private String logo;
+
     private List<String> backgrounds;
 
     private Integer categoryId;
+
+    private CategoryDto category;
+
+    private Coordinate2D coordinate2D;
+
+    private Coordinate3D coordinate3D;
+
+    private List<Costume> costumes;
 }

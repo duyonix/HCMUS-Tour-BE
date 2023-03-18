@@ -1,6 +1,7 @@
 package com.onix.hcmustour.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,13 +29,32 @@ public class Scope {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "logo", columnDefinition = "TEXT")
+    private String logo;
+
     @ElementCollection
     @CollectionTable(name = "background", joinColumns = @JoinColumn(name = "scope_id"))
     @Column(name = "background")
     private List<String> backgrounds;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "x", column = @Column(name = "x_2d")),
+            @AttributeOverride(name = "y", column = @Column(name = "y_2d"))
+    })
+    private Coordinate2D coordinate2D;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "x", column = @Column(name = "x_3d")),
+            @AttributeOverride(name = "y", column = @Column(name = "y_3d")),
+            @AttributeOverride(name = "z", column = @Column(name = "z_3d"))
+    })
+    private Coordinate3D coordinate3D;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties("scopes")
     private Category category;
 
     @OneToMany(mappedBy = "scope", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -1,5 +1,6 @@
 package com.onix.hcmustour.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,5 +31,6 @@ public class Costume {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scope_id")
+    @JsonIgnoreProperties("costumes")
     private Scope scope;
 }
