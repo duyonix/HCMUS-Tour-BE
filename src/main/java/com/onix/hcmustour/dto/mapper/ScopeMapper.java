@@ -5,6 +5,8 @@ import com.onix.hcmustour.dto.model.ScopeDto;
 import com.onix.hcmustour.model.Category;
 import com.onix.hcmustour.model.Scope;
 
+import java.util.stream.Collectors;
+
 public class ScopeMapper {
     public static Scope toScope(ScopeRequest scopeRequest, Category category) {
         return new Scope()
@@ -18,7 +20,7 @@ public class ScopeMapper {
     }
 
     public static ScopeDto toScopeDto(Scope scope) {
-        return new ScopeDto()
+        ScopeDto scopeDto = new ScopeDto()
                 .setId(scope.getId())
                 .setName(scope.getName())
                 .setDescription(scope.getDescription())
@@ -27,7 +29,20 @@ public class ScopeMapper {
                 .setCategoryId(scope.getCategory().getId())
                 .setCategory(CategoryMapper.toCategoryDto(scope.getCategory()))
                 .setCoordinate2D(scope.getCoordinate2D())
-                .setCoordinate3D(scope.getCoordinate3D())
-                .setCostumes(scope.getCostumes());
+                .setCoordinate3D(scope.getCoordinate3D());
+
+        if (scope.getCostumes() != null) {
+            scopeDto.setCostumes(scope.getCostumes().stream()
+                    .map(CostumeMapper::toCostumeDto)
+                    .collect(Collectors.toList()));
+        }
+
+        return scopeDto;
+    }
+
+    public static ScopeDto toScopeDtoForCostume(Scope scope) {
+        return new ScopeDto()
+                .setId(scope.getId())
+                .setName(scope.getName());
     }
 }

@@ -7,6 +7,7 @@ import com.onix.hcmustour.exception.ApplicationException;
 import com.onix.hcmustour.exception.EntityType;
 import com.onix.hcmustour.exception.ExceptionType;
 import com.onix.hcmustour.model.Category;
+import com.onix.hcmustour.model.Scope;
 import com.onix.hcmustour.repository.CategoryRepository;
 import com.onix.hcmustour.util.ValueMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -133,6 +134,12 @@ public class CategoryService {
         if (category.isEmpty()) {
             log.error("CategoryService::deleteCategory execution failed with category not found {}", id);
             throw exception(EntityType.CATEGORY, ExceptionType.ENTITY_NOT_FOUND, id.toString());
+        }
+
+        List<Scope> scopes = category.get().getScopes();
+        if (scopes != null && !scopes.isEmpty()) {
+            log.error("CategoryService::deleteCategory execution failed with category in use {}", id);
+            throw exception(EntityType.CATEGORY, ExceptionType.ALREADY_USED_ELSEWHERE, id.toString());
         }
 
         try {

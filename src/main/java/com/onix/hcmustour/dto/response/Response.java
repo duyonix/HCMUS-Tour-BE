@@ -71,6 +71,12 @@ public class Response<T> {
         return response;
     }
 
+    public static <T> Response<T> useElsewhere() {
+        Response<T> response = new Response<>();
+        response.setStatus(Status.ALREADY_USED_ELSEWHERE);
+        return response;
+    }
+
     public void addErrorMsgToResponse(String errorMsg, Exception ex) {
         ResponseError error = new ResponseError()
                 .setDetails(errorMsg)
@@ -80,7 +86,7 @@ public class Response<T> {
     }
 
     public enum Status {
-        OK, BAD_REQUEST, UNAUTHORIZED, VALIDATION_EXCEPTION, EXCEPTION, WRONG_CREDENTIALS, ACCESS_DENIED, NOT_FOUND, DUPLICATE_ENTITY
+        OK, BAD_REQUEST, UNAUTHORIZED, VALIDATION_EXCEPTION, EXCEPTION, WRONG_CREDENTIALS, ACCESS_DENIED, NOT_FOUND, DUPLICATE_ENTITY, ALREADY_USED_ELSEWHERE
     }
 
     @Data

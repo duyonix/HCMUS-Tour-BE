@@ -31,6 +31,6 @@ public class Costume {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "scope_id")
-    @JsonIgnoreProperties("costumes")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "costumes", "category"})
     private Scope scope;
 }

@@ -17,13 +17,27 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public final ResponseEntity handleNotFountExceptions(Exception ex, WebRequest request) {
         Response<Object> response = Response.notFound();
         response.addErrorMsgToResponse(ex.getMessage(), ex);
-        return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ApplicationException.DuplicateEntityException.class)
     public final ResponseEntity handleDuplicateExceptions(Exception ex, WebRequest request) {
         Response<Object> response = Response.duplicateEntity();
         response.addErrorMsgToResponse(ex.getMessage(), ex);
-        return new ResponseEntity(response, HttpStatus.CONFLICT);
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ApplicationException.EntityAlreadyUsedException.class)
+    public final ResponseEntity handleEntityAlreadyUsedException(Exception ex, WebRequest request) {
+        Response<Object> response = Response.useElsewhere();
+        response.addErrorMsgToResponse(ex.getMessage(), ex);
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ApplicationException.DefaultException.class)
+    public final ResponseEntity handleDefaultException(Exception ex, WebRequest request) {
+        Response<Object> response = Response.exception();
+        response.addErrorMsgToResponse(ex.getMessage(), ex);
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 }

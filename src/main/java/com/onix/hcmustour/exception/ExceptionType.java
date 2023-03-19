@@ -3,6 +3,7 @@ package com.onix.hcmustour.exception;
 public enum ExceptionType {
     ENTITY_NOT_FOUND("not.found"),
     DUPLICATE_ENTITY("duplicate"),
+    ALREADY_USED_ELSEWHERE("used.elsewhere"),
     ENTITY_EXCEPTION("exception");
 
 

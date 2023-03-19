@@ -78,8 +78,10 @@ public class ApplicationException {
             return new EntityNotFoundException(format(messageTemplate, args));
         } else if (ExceptionType.DUPLICATE_ENTITY.equals(exceptionType)) {
             return new DuplicateEntityException(format(messageTemplate, args));
+        } else if (ExceptionType.ALREADY_USED_ELSEWHERE.equals(exceptionType)) {
+            return new EntityAlreadyUsedException(format(messageTemplate, args));
         }
-        return new RuntimeException(format(messageTemplate, args));
+        return new DefaultException(format(messageTemplate, args));
     }
 
     private static String getMessageTemplate(EntityType entityType, ExceptionType exceptionType) {
@@ -103,4 +105,11 @@ public class ApplicationException {
         }
     }
 
+    public static class EntityAlreadyUsedException extends RuntimeException {
+        public EntityAlreadyUsedException(String message) { super(message); }
+    }
+
+    public static class DefaultException extends RuntimeException {
+        public DefaultException(String message) { super(message); }
+    }
 }

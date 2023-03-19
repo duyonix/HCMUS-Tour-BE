@@ -109,7 +109,6 @@ public class ScopeService {
                     log.error("ScopeService::updateScope execution failed with invalid scope id {}", id);
                     throw exception(EntityType.SCOPE, ExceptionType.ENTITY_NOT_FOUND, id.toString());
                 });
-        log.info("ScopeService::updateScope scope found {}", ValueMapper.jsonAsString(scope));
 
         Optional<Scope> duplicateScope = scopeRepository.findByName(scopeRequest.getName());
         if (duplicateScope.isPresent() && !duplicateScope.get().getId().equals(scope.getId())) {
@@ -122,7 +121,6 @@ public class ScopeService {
                     log.error("ScopeService::updateScope execution failed with invalid category id {}", scopeRequest.getCategoryId());
                     throw exception(EntityType.CATEGORY, ExceptionType.ENTITY_NOT_FOUND, scopeRequest.getCategoryId().toString());
                 });
-        log.info("ScopeService::updateScope category found {}", ValueMapper.jsonAsString(category));
 
         try {
             Scope updatedScope = ScopeMapper.toScope(scopeRequest, category);
@@ -153,6 +151,11 @@ public class ScopeService {
                     log.error("ScopeService::deleteScope execution failed with invalid scope id {}", id);
                     throw exception(EntityType.SCOPE, ExceptionType.ENTITY_NOT_FOUND, id.toString());
                 });
+
+        if (!scope.getCostumes().isEmpty()) {
+            log.error("ScopeService::deleteScope execution failed with scope in use {}", id);
+            throw exception(EntityType.SCOPE, ExceptionType.ALREADY_USED_ELSEWHERE, id.toString());
+        }
 
         try {
             scopeDto = ScopeMapper.toScopeDto(scope);
