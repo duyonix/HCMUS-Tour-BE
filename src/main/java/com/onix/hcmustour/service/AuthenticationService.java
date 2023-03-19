@@ -1,12 +1,14 @@
 package com.onix.hcmustour.service;
 
 import com.onix.hcmustour.controller.v1.request.AuthenticationRequest;
+import com.onix.hcmustour.controller.v1.request.RegisterRequest;
 import com.onix.hcmustour.dto.mapper.UserMapper;
 import com.onix.hcmustour.dto.model.AuthenticationDto;
 import com.onix.hcmustour.dto.model.UserDto;
 import com.onix.hcmustour.exception.ApplicationException;
 import com.onix.hcmustour.exception.EntityType;
 import com.onix.hcmustour.exception.ExceptionType;
+import com.onix.hcmustour.model.Role;
 import com.onix.hcmustour.model.Token;
 import com.onix.hcmustour.model.TokenType;
 import com.onix.hcmustour.model.User;
@@ -37,22 +39,22 @@ public class AuthenticationService {
 
     private final ModelMapper modelMapper;
 
-    public UserDto register(UserDto userDto) {
-        Optional<User> user = userRepository.findByEmail(userDto.getEmail());
+    public UserDto register(RegisterRequest request) {
+        Optional<User> user = userRepository.findByEmail(request.getEmail());
         if (user.isEmpty()) {
             User newUser = new User()
-                    .setEmail(userDto.getEmail())
-                    .setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()))
-                    .setFirstName(userDto.getFirstName())
-                    .setLastName(userDto.getLastName())
-                    .setMobileNumber(userDto.getMobileNumber())
-                    .setRole(userDto.getRole());
+                    .setEmail(request.getEmail())
+                    .setPassword(bCryptPasswordEncoder.encode(request.getPassword()))
+                    .setFirstName(request.getFirstName())
+                    .setLastName(request.getLastName())
+                    .setMobileNumber(request.getMobileNumber())
+                    .setRole(Role.USER);
             User savedUser = userRepository.save(newUser);
             String jwtToken = jwtService.generateToken(newUser);
             saveUserToken(newUser, jwtToken);
             return UserMapper.toUserDto(savedUser);
         }
-        throw exception(EntityType.USER, ExceptionType.DUPLICATE_ENTITY, userDto.getEmail());
+        throw exception(EntityType.USER, ExceptionType.DUPLICATE_ENTITY, request.getEmail());
     }
 
     public AuthenticationDto authenticate(AuthenticationRequest request) {

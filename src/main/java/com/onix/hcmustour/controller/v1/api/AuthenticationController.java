@@ -27,28 +27,16 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<Response> register(@RequestBody @Valid RegisterRequest request) {
         log.info("AuthenticationController::register request body {}", ValueMapper.jsonAsString(request));
-        Response<Object> response = Response.ok().setPayload(registerUser(request));
+        Response<Object> response = Response.ok().setPayload(authenticationService.register(request));
         log.info("AuthenticationController::register response {}", ValueMapper.jsonAsString(response));
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<Response> authenticate(@RequestBody @Valid AuthenticationRequest request) {
-//        return Response.ok().setPayload(authenticationService.authenticate(request));
         log.info("AuthenticationController::authenticate request body {}", ValueMapper.jsonAsString(request));
         Response<Object> response = Response.ok().setPayload(authenticationService.authenticate(request));
         log.info("AuthenticationController::authenticate response {}", ValueMapper.jsonAsString(response));
         return new ResponseEntity<>(response, HttpStatus.OK);
-    }
-
-    private UserDto registerUser(RegisterRequest request) {
-        UserDto userDto = new UserDto()
-                .setEmail(request.getEmail())
-                .setPassword(request.getPassword())
-                .setFirstName(request.getFirstName())
-                .setLastName(request.getLastName())
-                .setMobileNumber(request.getMobileNumber())
-                .setRole(Role.USER);
-        return authenticationService.register(userDto);
     }
 }
