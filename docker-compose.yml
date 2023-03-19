@@ -16,9 +16,9 @@ services:
     depends_on:
       - postgres
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hcmus-tour
+      SPRING_DATASOURCE_URL: jdbc:postgresql://dpg-cgbartg2qv267ufttkn0-a.singapore-postgres.render.com:5432/hcmustour
       SPRING_DATASOURCE_USERNAME: onix
-      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_DATASOURCE_PASSWORD: yrXTGErVv8NYIxn5Af6TvGPoOL3Ovl50
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     ports:
       - "8080:8080"
