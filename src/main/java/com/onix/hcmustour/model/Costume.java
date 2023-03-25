@@ -26,6 +26,9 @@ public class Costume {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
+    @Column(name = "picture", columnDefinition = "TEXT")
+    private String picture;
+
     @Column(name = "model", nullable = false, columnDefinition = "TEXT")
     private String model;
 

@@ -19,6 +19,8 @@ public class CostumeDto {
 
     private String description;
 
+    private String picture;
+
     private String model;
 
     private Integer scopeId;

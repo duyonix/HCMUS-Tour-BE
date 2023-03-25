@@ -10,6 +10,7 @@ public class CostumeMapper {
         return new Costume()
                 .setName(costumeRequest.getName())
                 .setDescription(costumeRequest.getDescription())
+                .setPicture(costumeRequest.getPicture())
                 .setModel(costumeRequest.getModel())
                 .setScope(scope);
     }
@@ -19,6 +20,7 @@ public class CostumeMapper {
                 .setId(costume.getId())
                 .setName(costume.getName())
                 .setDescription(costume.getDescription())
+                .setPicture(costume.getPicture())
                 .setModel(costume.getModel())
                 .setScopeId(costume.getScope().getId())
                 .setScope(ScopeMapper.toScopeDtoForCostume(costume.getScope()));
