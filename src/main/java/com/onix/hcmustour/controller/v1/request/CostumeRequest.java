@@ -19,6 +19,9 @@ public class CostumeRequest {
 
     private String description;
 
+    @NotBlank(message = "Picture is required")
+    private String picture;
+
     @NotBlank(message = "Model is required")
     private String model;
 
