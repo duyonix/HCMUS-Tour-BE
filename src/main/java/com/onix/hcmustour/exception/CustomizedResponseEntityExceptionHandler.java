@@ -1,17 +1,33 @@
 package com.onix.hcmustour.exception;
 
 import com.onix.hcmustour.dto.response.Response;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @ControllerAdvice
 @RestController
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Override
+    public final ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        Response<Object> response = Response.argumentNotValid();
+        String errorMessage = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
+        response.addErrorMsgToResponse(errorMessage, ex);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(ApplicationException.EntityNotFoundException.class)
     public final ResponseEntity handleNotFountExceptions(Exception ex, WebRequest request) {
@@ -34,8 +50,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(ApplicationException.DefaultException.class)
-    public final ResponseEntity handleDefaultException(Exception ex, WebRequest request) {
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity handleAllExceptions(Exception ex, WebRequest request) {
         Response<Object> response = Response.exception();
         response.addErrorMsgToResponse(ex.getMessage(), ex);
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);

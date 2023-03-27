@@ -81,7 +81,7 @@ public class ApplicationException {
         } else if (ExceptionType.ALREADY_USED_ELSEWHERE.equals(exceptionType)) {
             return new EntityAlreadyUsedException(format(messageTemplate, args));
         }
-        return new DefaultException(format(messageTemplate, args));
+        return (RuntimeException) new Exception(format(messageTemplate, args));
     }
 
     private static String getMessageTemplate(EntityType entityType, ExceptionType exceptionType) {
