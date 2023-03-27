@@ -13,7 +13,8 @@ public class PropertiesConfig {
         this.env = env;
     }
 
-    public String getConfigValue(String configKey) {
+    public String getConfigValue
+            (String configKey) {
         return env.getProperty(configKey);
     }
 }
