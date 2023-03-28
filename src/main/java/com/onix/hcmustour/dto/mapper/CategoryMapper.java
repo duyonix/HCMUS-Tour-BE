@@ -19,4 +19,10 @@ public class CategoryMapper {
                 .setDescription(category.getDescription())
                 .setBackground(category.getBackground());
     }
+
+    public static CategoryDto toCategoryOptionDto(Category category) {
+        return new CategoryDto()
+                .setId(category.getId())
+                .setName(category.getName());
+    }
 }

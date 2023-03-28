@@ -25,4 +25,14 @@ public class CostumeMapper {
                 .setScopeId(costume.getScope().getId())
                 .setScope(ScopeMapper.toScopeDtoForCostume(costume.getScope()));
     }
+
+    public static CostumeDto toCostumeDtoForScope(Costume costume) {
+        return new CostumeDto()
+                .setId(costume.getId())
+                .setName(costume.getName())
+                .setDescription(costume.getDescription())
+                .setPicture(costume.getPicture())
+                .setModel(costume.getModel())
+                .setScopeId(costume.getScope().getId());
+    }
 }
