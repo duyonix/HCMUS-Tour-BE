@@ -33,7 +33,7 @@ public class ScopeMapper {
 
         if (scope.getCostumes() != null) {
             scopeDto.setCostumes(scope.getCostumes().stream()
-                    .map(CostumeMapper::toCostumeDto)
+                    .map(CostumeMapper::toCostumeDtoForScope)
                     .collect(Collectors.toList()));
         }
 
@@ -41,6 +41,12 @@ public class ScopeMapper {
     }
 
     public static ScopeDto toScopeDtoForCostume(Scope scope) {
+        return new ScopeDto()
+                .setId(scope.getId())
+                .setName(scope.getName());
+    }
+
+    public static ScopeDto toScopeOptionDto(Scope scope) {
         return new ScopeDto()
                 .setId(scope.getId())
                 .setName(scope.getName());

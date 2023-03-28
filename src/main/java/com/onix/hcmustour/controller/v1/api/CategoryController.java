@@ -54,6 +54,16 @@ public class CategoryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/options")
+    public ResponseEntity<Response> getCategoryOptions() {
+        log.info("CategoryController::getCategoryOptions");
+        List<CategoryDto> categories = categoryService.getCategoryOptions();
+        Response<Object> response = Response.ok().setPayload(categories);
+        log.info("CategoryController::getCategoryOptions response {}", ValueMapper.jsonAsString(response));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<Response> updateCategory(@PathVariable("id") Integer id, @RequestBody @Valid CategoryRequest categoryRequest) {
         log.info("CategoryController::updateCategory by id {} request body {}", id, ValueMapper.jsonAsString(categoryRequest));

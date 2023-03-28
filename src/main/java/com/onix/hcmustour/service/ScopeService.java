@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -79,6 +80,23 @@ public class ScopeService {
         }
 
         log.info("ScopeService::getScopes execution completed");
+        return scopeDtos;
+    }
+
+    public List<ScopeDto> getScopeOptions() {
+        log.info("ScopeService::getScopeOptions execution started");
+        List<ScopeDto> scopeDtos;
+
+        try {
+            List<Scope> scopes = scopeRepository.findAll();
+            scopeDtos = scopes.stream().map(ScopeMapper::toScopeOptionDto).toList();
+            log.debug("ScopeService::getScopeOptions received response from database {}", ValueMapper.jsonAsString(scopeDtos));
+        } catch (Exception e) {
+            log.error("ScopeService::getScopeOptions execution failed with error {}", e.getMessage());
+            throw exception(EntityType.SCOPE, ExceptionType.ENTITY_EXCEPTION, e.getMessage());
+        }
+
+        log.info("ScopeService::getScopeOptions execution completed");
         return scopeDtos;
     }
 

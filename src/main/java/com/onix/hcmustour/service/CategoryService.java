@@ -73,6 +73,23 @@ public class CategoryService {
         return categoryDtos;
     }
 
+    public List<CategoryDto> getCategoryOptions() {
+        log.info("CategoryService::getCategoryOptions execution started");
+        List<CategoryDto> categoryDtos;
+        try {
+            List<Category> categories = categoryRepository.findAll();
+
+            categoryDtos = categories.stream().map(CategoryMapper::toCategoryOptionDto).toList();
+            log.debug("CategoryService::getCategoryOptions received response from database {}", ValueMapper.jsonAsString(categoryDtos));
+        } catch (Exception e) {
+            log.error("CategoryService::getCategoryOptions execution failed with error {}", e.getMessage());
+            throw exception(EntityType.CATEGORY, ExceptionType.ENTITY_EXCEPTION, e.getMessage());
+        }
+
+        log.info("CategoryService::getCategoryOptions execution completed");
+        return categoryDtos;
+    }
+
     public CategoryDto getCategory(Integer id) {
         log.info("CategoryService::getCategory execution started");
         CategoryDto categoryDto;

@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/scopes")
 @Slf4j
@@ -44,6 +46,15 @@ public class ScopeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/options")
+    public ResponseEntity<Response> getScopeOptions() {
+        log.info("ScopeController::getScopeOptions");
+        List<ScopeDto> scopes = scopeService.getScopeOptions();
+        Response<Object> response = Response.ok().setPayload(scopes);
+        log.info("ScopeController::getScopeOptions response {}", ValueMapper.jsonAsString(response));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Response> getScope(@PathVariable("id") Integer id) {
         log.info("ScopeController::getScope by id {}", id);
@@ -72,5 +83,4 @@ public class ScopeController {
         log.info("ScopeController::deleteScope by id {} response {}", id, ValueMapper.jsonAsString(response));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 }
