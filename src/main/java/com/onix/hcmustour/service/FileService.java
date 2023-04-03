@@ -100,11 +100,21 @@ public class FileService {
         return StringUtils.getFilenameExtension(originalFileName);
     }
 
+    private String getFileName(String originalFileName) {
+        if (originalFileName == null) {
+            return null;
+        } else {
+            int extensionPos = originalFileName.lastIndexOf(46);
+            return extensionPos == -1 ? originalFileName : originalFileName.substring(0, extensionPos);
+        }
+    }
+
     private String generateFileName(String originalFileName) {
+        String fileName = getFileName(originalFileName);
         String fileExtension = getExtension(originalFileName);
         String formattedDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
         String uuid = UUID.randomUUID().toString();
-        return String.format("%s_%s_%s.%s", originalFileName, formattedDateTime, uuid, fileExtension);
+        return String.format("%s_%s_%s.%s", fileName, formattedDateTime, uuid, fileExtension);
     }
 
     private byte[] getByteArrays(BufferedImage bufferedImage, String format) throws IOException {
