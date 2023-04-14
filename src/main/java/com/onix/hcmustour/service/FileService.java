@@ -2,6 +2,7 @@ package com.onix.hcmustour.service;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -16,8 +17,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -64,6 +70,58 @@ public class FileService {
         bucket.create(name, file.getBytes(), file.getContentType());
 
         return name;
+    }
+
+    public String save(String url) throws IOException {
+        URL fileUrl = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) fileUrl.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setDoOutput(true);
+        connection.connect();
+
+        String fileName = getFileNameFromUrl(url);
+        String fileType = getFileNameExtension(fileName);
+        String firebaseFileName = generateFileName(fileName);
+
+        Bucket bucket = StorageClient.getInstance().bucket();
+
+        BlobInfo blobInfo = BlobInfo.newBuilder(bucket.getName(), firebaseFileName).build();
+        byte[] fileBytes = null;
+
+        try (InputStream inputStream = connection.getInputStream();
+             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+            byte[] buffer = new byte[1024];
+            int bytesRead = -1;
+            while ((bytesRead = bufferedInputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            fileBytes = outputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (fileBytes != null) {
+            bucket.create(blobInfo.getName(), fileBytes, fileType);
+        }
+
+        return firebaseFileName;
+    }
+
+    private String getFileNameFromUrl(String url) {
+        String[] pathSegments = url.split("/");
+        String fileName = pathSegments[pathSegments.length - 1];
+        return fileName;
+    }
+
+    private String getFileNameExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf(".");
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex + 1);
+        }
+        return "";
     }
 
     public String save(BufferedImage bufferedImage, String originalFileName) throws IOException {

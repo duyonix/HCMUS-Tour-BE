@@ -83,6 +83,12 @@ public class Response<T> {
         return response;
     }
 
+    public static <T> Response<T> notMatch() {
+        Response<T> response = new Response<>();
+        response.setStatus(Status.NOT_MATCH);
+        return response;
+    }
+
     public void addErrorMsgToResponse(String errorMsg, Exception ex) {
         ResponseError error = new ResponseError()
                 .setDetails(errorMsg)
@@ -102,7 +108,8 @@ public class Response<T> {
         NOT_FOUND,
         DUPLICATE_ENTITY,
         ALREADY_USED_ELSEWHERE,
-        ARGUMENT_NOT_VALID
+        ARGUMENT_NOT_VALID,
+        NOT_MATCH
     }
 
     @Data

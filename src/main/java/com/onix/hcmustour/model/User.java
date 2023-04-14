@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @Column(name = "mobile_number", columnDefinition = "TEXT")
     private String mobileNumber;
 
+    @Column(name = "avatar", columnDefinition = "TEXT")
+    private String avatar;
+
     @Column(name = "model", columnDefinition = "TEXT")
     private String model;
 

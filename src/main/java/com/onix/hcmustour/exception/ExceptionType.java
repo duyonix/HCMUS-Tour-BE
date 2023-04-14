@@ -4,6 +4,7 @@ public enum ExceptionType {
     ENTITY_NOT_FOUND("not.found"),
     DUPLICATE_ENTITY("duplicate"),
     ALREADY_USED_ELSEWHERE("used.elsewhere"),
+    NOT_MATCH("not.match"),
     ENTITY_EXCEPTION("exception");
 
 
