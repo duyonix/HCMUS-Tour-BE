@@ -80,6 +80,8 @@ public class ApplicationException {
             return new DuplicateEntityException(format(messageTemplate, args));
         } else if (ExceptionType.ALREADY_USED_ELSEWHERE.equals(exceptionType)) {
             return new EntityAlreadyUsedException(format(messageTemplate, args));
+        } else if (ExceptionType.NOT_MATCH.equals(exceptionType)) {
+            return new EntityNotMatchException(format(messageTemplate, args));
         }
         return (RuntimeException) new Exception(format(messageTemplate, args));
     }
@@ -106,10 +108,14 @@ public class ApplicationException {
     }
 
     public static class EntityAlreadyUsedException extends RuntimeException {
-        public EntityAlreadyUsedException(String message) { super(message); }
+        public EntityAlreadyUsedException(String message) {
+            super(message);
+        }
     }
 
-    public static class DefaultException extends RuntimeException {
-        public DefaultException(String message) { super(message); }
+    public static class EntityNotMatchException extends RuntimeException {
+        public EntityNotMatchException(String message) {
+            super(message);
+        }
     }
 }

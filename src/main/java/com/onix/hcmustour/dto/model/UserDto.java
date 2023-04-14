@@ -25,6 +25,8 @@ public class UserDto {
 
     private String mobileNumber;
 
+    private String avatar;
+
     private String model;
 
     private Role role;

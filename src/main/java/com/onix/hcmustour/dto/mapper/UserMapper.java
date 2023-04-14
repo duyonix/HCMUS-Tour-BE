@@ -12,6 +12,7 @@ public class UserMapper {
                 .setFirstName(user.getFirstName())
                 .setLastName(user.getLastName())
                 .setMobileNumber(user.getMobileNumber())
+                .setAvatar(user.getAvatar())
                 .setModel(user.getModel())
                 .setRole(user.getRole());
     }

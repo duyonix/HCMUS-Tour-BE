@@ -44,4 +44,22 @@ public class FileController {
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/upload-from-url")
+    public ResponseEntity<Response> uploadFromUrl(@RequestParam("url") String url) {
+        try {
+            log.info("FileController::uploadFromUrl url {}", url);
+            String fileName = fileService.save(url);
+            String fileUrl = fileService.getImageUrl(fileName);
+
+            UploadedFileDto uploadedFile = new UploadedFileDto().setFileName(fileName).setUrl(fileUrl);
+            Response<Object> response = Response.ok().setPayload(uploadedFile);
+            log.info("FileController::uploadFromUrl response {}", ValueMapper.jsonAsString(response));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            Response<Object> errorResponse = Response.badRequest().setErrors(e.getMessage());
+            log.error("FileController::uploadFromUrl error response {}", ValueMapper.jsonAsString(errorResponse));
+            return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
