@@ -1,5 +1,6 @@
 package com.onix.hcmustour.controller.v1.api;
 
+import com.onix.hcmustour.controller.v1.request.UrlRequest;
 import com.onix.hcmustour.dto.model.UploadedFileDto;
 import com.onix.hcmustour.dto.response.Response;
 import com.onix.hcmustour.service.FileService;
@@ -8,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -46,10 +44,10 @@ public class FileController {
     }
 
     @PostMapping("/upload-from-url")
-    public ResponseEntity<Response> uploadFromUrl(@RequestParam("url") String url) {
+    public ResponseEntity<Response> uploadFromUrl(@RequestBody UrlRequest urlRequest) {
         try {
-            log.info("FileController::uploadFromUrl url {}", url);
-            String fileName = fileService.save(url);
+            log.info("FileController::uploadFromUrl url {}", urlRequest.getUrl());
+            String fileName = fileService.save(urlRequest.getUrl());
             String fileUrl = fileService.getImageUrl(fileName);
 
             UploadedFileDto uploadedFile = new UploadedFileDto().setFileName(fileName).setUrl(fileUrl);
