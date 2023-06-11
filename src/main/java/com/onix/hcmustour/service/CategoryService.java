@@ -127,7 +127,8 @@ public class CategoryService {
 
         try {
             Category updatedCategory = CategoryMapper.toCategory(categoryRequest);
-            updatedCategory.setId(category.get().getId());
+            updatedCategory.setId(category.get().getId())
+                    .setScopes(category.get().getScopes());
             log.debug("CategoryService::updateCategory request parameters {}", ValueMapper.jsonAsString(updatedCategory));
 
             Category savedCategory = categoryRepository.save(updatedCategory);
