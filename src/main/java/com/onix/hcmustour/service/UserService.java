@@ -6,6 +6,7 @@ import com.onix.hcmustour.dto.model.UserDto;
 import com.onix.hcmustour.exception.ApplicationException;
 import com.onix.hcmustour.exception.EntityType;
 import com.onix.hcmustour.exception.ExceptionType;
+import com.onix.hcmustour.model.Role;
 import com.onix.hcmustour.model.User;
 import com.onix.hcmustour.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -26,13 +27,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Page<UserDto> getUsers(Integer page, Integer size, String search) {
+    public Page<UserDto> getUsers(Integer page, Integer size, String search, String role) {
         log.info("UserService::getUsers execution started");
         Page<UserDto> userDtos;
         try {
-            log.debug("UserService::getUsers request parameters page {}, size {}, search {}", page, size, search);
+            log.debug("UserService::getUsers request parameters page {}, size {}, search {} role {}", page, size, search, role);
             Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
-            Page<User> users = userRepository.findByEmailContaining(search, pageable);
+            Role roleEnum = role != null ? Role.valueOf(role.toUpperCase()) : null;
+            Page<User> users = userRepository.findByEmailSearchAndRole(search.replaceAll("\\s+", " ").trim(), roleEnum, pageable);
 
             userDtos = users.map(UserMapper::toUserDto);
             log.debug("UserService::getUsers received response from database {}", userDtos);
@@ -121,6 +123,33 @@ public class UserService {
         }
 
         log.info("UserService::updatePassword execution completed");
+        return updatedUserDto;
+    }
+
+    public UserDto updateRole(Integer id, String role) {
+        log.info("UserService::updateRole execution started");
+        UserDto updatedUserDto;
+
+        log.info("UserService::updateRole request parameters id {}, role {}", id, role);
+        User user = userRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> {
+                    log.error("UserService::updateRole execution failed with user not found {}", id);
+                    return exception(EntityType.USER, ExceptionType.ENTITY_NOT_FOUND, id.toString());
+                });
+
+        try {
+            Role roleEnum = Role.valueOf(role.toUpperCase());
+            user.setRole(roleEnum);
+
+            User savedUser = userRepository.save(user);
+            updatedUserDto = UserMapper.toUserDto(savedUser);
+            log.debug("UserService::updateRole received response from database {}", updatedUserDto);
+        } catch (Exception e) {
+            log.error("UserService::updateRole execution failed with error {}", e.getMessage());
+            throw exception(EntityType.USER, ExceptionType.ENTITY_EXCEPTION, e.getMessage());
+        }
+
+        log.info("UserService::updateRole execution completed");
         return updatedUserDto;
     }
 

@@ -12,4 +12,5 @@ import lombok.experimental.Accessors;
 public class AuthenticationDto {
     private String token;
     private UserDto user;
+    private Boolean firstLogin;
 }

@@ -32,6 +32,6 @@ public class UserDto {
     private Role role;
 
     public String getFullName() {
-        return firstName != null ? firstName.concat(" ").concat(lastName) : "";
+        return lastName != null ? lastName.concat(" ").concat(firstName) : "";
     }
 }

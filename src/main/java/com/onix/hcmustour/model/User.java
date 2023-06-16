@@ -50,14 +50,16 @@ public class User implements UserDetails {
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("'USER'")
-    private Role role;
+    private Role role = Role.USER;
+
+    @Column(name = "first_login", columnDefinition = "BOOLEAN")
+    private Boolean firstLogin = true;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens;
 
     public String getFullName() {
-        return firstName != null ? firstName.concat(" ").concat(lastName) : "";
+        return lastName != null ? lastName.concat(" ").concat(firstName) : "";
     }
 
     @Override

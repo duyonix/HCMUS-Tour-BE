@@ -67,10 +67,16 @@ public class AuthenticationService {
                     )
             );
             String jwtToken = jwtService.generateToken(user.get());
+            boolean firstLogin = user.get().getFirstLogin();
+            if (firstLogin) {
+                user.get().setFirstLogin(false);
+                userRepository.save(user.get());
+            }
             saveUserToken(user.get(), jwtToken);
             return new AuthenticationDto()
                     .setToken(jwtToken)
-                    .setUser(UserMapper.toUserDto(user.get()));
+                    .setUser(UserMapper.toUserDto(user.get()))
+                    .setFirstLogin(firstLogin);
         }
         throw exception(EntityType.USER, ExceptionType.ENTITY_NOT_FOUND, request.getEmail());
     }

@@ -1,5 +1,6 @@
 package com.onix.hcmustour.controller.v1.api;
 
+import com.onix.hcmustour.controller.v1.request.RoleRequest;
 import com.onix.hcmustour.controller.v1.request.UpdatePasswordRequest;
 import com.onix.hcmustour.dto.model.UserDto;
 import com.onix.hcmustour.dto.response.Response;
@@ -23,10 +24,11 @@ public class UserController {
     public ResponseEntity<Response> getUsers(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
-            @RequestParam(value = "search", defaultValue = "") String search
+            @RequestParam(value = "search", defaultValue = "") String search,
+            @RequestParam(value = "role", required = false) String role
     ) {
-        log.info("UserController::getUsers page {} size {} search {}", page, size, search);
-        Page<UserDto> users = userService.getUsers(page, size, search);
+        log.info("UserController::getUsers page {} size {} search {} role {}", page, size, search, role);
+        Page<UserDto> users = userService.getUsers(page, size, search, role);
 
         Response<Object> response = Response.ok().setPayload(users);
         log.info("UserController::getUsers response {}", response);
@@ -43,7 +45,7 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/update-profile")
+    @PutMapping("/update-profile")
     public ResponseEntity<Response> updateProfile(@RequestBody UserDto userDto) {
         log.info("UserController::updateProfile request body {}", userDto);
         UserDto user = userService.updateProfile(userDto);
@@ -53,13 +55,24 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/update-password")
+    @PutMapping("/update-password")
     public ResponseEntity<Response> updatePassword(@RequestBody @Valid UpdatePasswordRequest updatePasswordRequest) {
         log.info("UserController::updatePassword request body {}", updatePasswordRequest);
         UserDto user = userService.updatePassword(updatePasswordRequest);
 
         Response<Object> response = Response.ok().setPayload(user);
         log.info("UserController::updatePassword response {}", response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/update-role")
+    public ResponseEntity<Response> updateRole(@PathVariable("id") Integer id, @RequestBody @Valid RoleRequest roleRequest) {
+        String role = roleRequest.getRole();
+        log.info("UserController::updateRole by id {} role {}", id, role);
+        UserDto user = userService.updateRole(id, role);
+
+        Response<Object> response = Response.ok().setPayload(user);
+        log.info("UserController::updateRole by id {} response {}", id, response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
